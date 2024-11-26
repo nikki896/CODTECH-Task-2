@@ -1,0 +1,81 @@
+class LibraryItem:
+    def __init__(self, title, author, category):
+        self.title = title
+        self.author = author
+        self.category = category
+        self.checked_out = False
+
+class Library:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, title, author, category):
+        item = LibraryItem(title, author, category)
+        self.items.append(item)
+        print(f'Item "{title}" added to the library.')
+
+    def check_out_item(self, title):
+        for item in self.items:
+            if item.title == title:
+                if not item.checked_out:
+                    item.checked_out = True
+                    print(f'Item "{title}" checked out.')
+                else:
+                    print(f'Item "{title}" is already checked out.')
+                return
+        print(f'Item "{title}" not found in the library.')
+
+    def return_item(self, title):
+        for item in self.items:
+            if item.title == title:
+                if item.checked_out:
+                    item.checked_out = False
+                    print(f'Item "{title}" returned.')
+                else:
+                    print(f'Item "{title}" was not checked out.')
+                return
+        print(f'Item "{title}" not found in the library.')
+
+    def search_items(self, search_term):
+        found_items = [item for item in self.items if search_term.lower() in item.title.lower() or search_term.lower() in item.author.lower() or search_term.lower() in item.category.lower()]
+        if found_items:
+            print("Search Results:")
+            for item in found_items:
+                status = "Checked out" if item.checked_out else "Available"
+                print(f'Title: {item.title}, Author: {item.author}, Category: {item.category}, Status: {status}')
+        else:
+            print("No items found.")
+
+def main():
+    library = Library()
+
+    while True:
+        print("\nLibrary Management System")
+        print("1. Add Item")
+        print("2. Check Out Item")
+        print("3. Return Item")
+        print("4. Search Items")
+        print("5. Exit")
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            title = input("Enter the title: ")
+            author = input("Enter the author: ")
+            category = input("Enter the category: ")
+            library.add_item(title, author, category)
+        elif choice == '2':
+            title = input("Enter the title of the item to check out: ")
+            library.check_out_item(title)
+        elif choice == '3':
+            title = input("Enter the title of the item to return: ")
+            library.return_item(title)
+        elif choice == '4':
+            search_term = input("Enter the title, author, or category to search for: ")
+            library.search_items(search_term)
+        elif choice == '5':
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
